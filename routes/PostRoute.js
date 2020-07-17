@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const ProductsModel = require('../models/ProductsModel.js');
+const PostModel = require('../models/PostModel');
 
-// Saving product
+// Saving Post
 router.post(
     '/',
     (req, res) => {
@@ -10,10 +10,10 @@ router.post(
             text: req.body.text
         };
 
-        const newProductModel = new ProductsModel(formData);
-        newProductModel.save();
+        const newPostModel = new PostModel(formData);
+        newPostModel.save();
 
-        res.send('Your POST products has been received');
+        res.send('Your Post has been received');
     }
 );
 
@@ -26,7 +26,7 @@ router.post(
             _id: req.body._id
         };
 
-        ProductsModel.findByIdAndUpdate(
+        PostModel.findByIdAndUpdate(
             {_id: formData._id},
             {text: req.body.text},
             {},
@@ -36,7 +36,7 @@ router.post(
              } else {
                     res.json (
                         {
-                            message : "you're product is updated",
+                            message : "you're Post is updated",
                             document: document
                         }
                     )
@@ -50,7 +50,7 @@ router.post(
 router.post(
     '/likes',
     (req, res) => {
-        ProductsModel.findById(req.body.feed_id)
+        PostModel.findById(req.body.feed_id)
                     .then(
                         (document) => {
                             if (document.likes.indexOf(req.user._id) !== -1) {
@@ -66,7 +66,7 @@ router.post(
                             console.log('err: ', err);
                         }
                     )
-        res.send('Your POST likes has been received');
+        res.send('Your like has been received');
     }
 );
 

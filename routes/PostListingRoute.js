@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const ProductsModel = require('../models/ProductsModel.js');
+const PostModel = require('../models/PostModel.js');
 
 
-// Get products 
+// Get Post
 router.get(
     '/',
     (req, res) => {
-        ProductsModel.find()
+        PostModel.find()
         .then(
             (results) => {
                 res.json(results);

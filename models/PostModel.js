@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const ProductsSchema = new mongoose.Schema(
+const PostSchema = new mongoose.Schema(
     {
         text: {
             type: String,
@@ -14,10 +14,10 @@ const ProductsSchema = new mongoose.Schema(
 );
 
 // Model
-const ProductsModel = mongoose.model(
-    'products',
-    ProductsSchema,
+const PostModel = mongoose.model(
+    'post',
+    PostSchema,
 );
 
 // Export 
-module.exports = ProductsModel;
+module.exports = PostModel;
