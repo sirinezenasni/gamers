@@ -50,6 +50,7 @@ const dbURL = "mongodb+srv://Admin:NewPassword@cluster0-l5lpl.mongodb.net/gamers
 
 const UsersRoutes = require('./routes/UsersRoute.js');
 const FeedsRoute = require('./routes/FeedsRoute.js');
+const ProductsRoute = require('./routes/ProductsRoute.js');
 
 mongoose.connect(
     dbURL,
@@ -76,6 +77,12 @@ server.use(
     '/feeds',
     passport.authenticate('jwt', {session: false}),
     FeedsRoute,
+);
+
+server.use(
+    '/products',
+    passport.authenticate('jwt', {session: false}),
+    ProductsRoute,
 );
 
 server.get(
