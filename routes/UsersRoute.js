@@ -92,5 +92,36 @@ router.post(
     }
 );
 
+// Update
+router.post(
+    '/update',
+    (req, res) => {
+        const formData  = {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            userName: req.body.userName,
+            _id: req.body._id
+        };
+
+        UsersModel.findByIdAndUpdate(
+            {_id: formData._id},
+            {firstName: req.body.firstName, lastName: req.body.lastName, userName: req.body.userName},
+            {},
+            (err, document) => {
+                if(err) {
+                    console.log(err);
+             } else {
+                    res.json (
+                        {
+                            message : "you're first name, last name and username are updated",
+                            document: document
+                        }
+                    )
+                }
+            }
+
+        )
+    }
+)
 
 module.exports = router;
