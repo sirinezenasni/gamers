@@ -44,6 +44,53 @@ router.post(
     }
 );
 
+// Login 
+router.post(
+    '/login',
+    (req, res) => {
+        const formData = {
+            email: req.body.email,
+            password: req.body.password
+        };
+
+        console.log("formData: ", formData);
+
+        UsersModel.findOne(
+            {email: formData.email},
+            (err, document) => {
+                if (!document) {
+                    res.json({message: 'Please check email or password'});
+                } else {
+                    bcrypt.compare(formData.password, document.password).then(
+                        (isMatch) => {
+                            if (isMatch === true) {
+                                const payload = {
+                                    id: document.id,
+                                    email: document.email
+                                };
+
+                                jwt.sign(
+                                    payload,
+                                    secret,
+                                    (err, jsonwebtoken) => {
+                                        res.json(
+                                            {
+                                                message: 'login successful',
+                                                jsonwebtoken: jsonwebtoken
+                                            }
+                                        )
+                                    }
+                                )
+                            } else {
+                                res.json({message: 'Please check email or password'});
+                            }
+                        }
+                    )               
+                }
+            }
+        );
+    }
+);
 
 
 module.exports = router;
