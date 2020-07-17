@@ -49,7 +49,7 @@ passportJwt(passport);
 const dbURL = "mongodb+srv://Admin:NewPassword@cluster0-l5lpl.mongodb.net/gamers?retryWrites=true&w=majority";
 
 const UsersRoutes = require('./routes/UsersRoute.js');
-const FeedsRoute = require('./routes/FeedsRoute.js');
+const ProductListingRoute = require('./routes/ProductListingRoute.js');
 const ProductsRoute = require('./routes/ProductsRoute.js');
 
 mongoose.connect(
@@ -74,9 +74,9 @@ server.use(
 );
 
 server.use(
-    '/feeds',
+    '/productlisting',
     passport.authenticate('jwt', {session: false}),
-    FeedsRoute,
+    ProductListingRoute,
 );
 
 server.use(
