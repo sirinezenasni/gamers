@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
 const secret = 's3cr3t1000';
 
@@ -16,8 +17,7 @@ router.post(
             lastName: req.body.lastName,
             userName: req.body.userName,
             email: req.body.email,
-            password: req.body.password,
-            date: req.body.date
+            password: req.body.password
         };
 
         bcrypt.genSalt(
@@ -59,34 +59,33 @@ router.post(
             {email: formData.email},
             (err, document) => {
                 if (!document) {
-                    res.json({message: 'Please check email or password'});
-                } else {
-                    bcrypt.compare(formData.password, document.password).then(
-                        (isMatch) => {
-                            if (isMatch === true) {
-                                const payload = {
-                                    id: document.id,
-                                    email: document.email
-                                };
+                    return res.json({message: 'Please check email or password'});
+                }
+                bcrypt.compare(formData.password, document.password).then(
+                    (isMatch) => {
+                        if (!isMatch) {
+                            return res.json({message: 'Please check email or password'});
+                        }
 
-                                jwt.sign(
-                                    payload,
-                                    secret,
-                                    (err, jsonwebtoken) => {
-                                        res.json(
-                                            {
-                                                message: 'login successful',
-                                                jsonwebtoken: jsonwebtoken
-                                            }
-                                        )
+                        const payload = {
+                            id: document.id,
+                            email: document.email
+                        };
+
+                        jwt.sign(
+                            payload,
+                            secret,
+                            (err, jsonwebtoken) => {
+                                res.json(
+                                    {
+                                        message: 'login successful',
+                                        jsonwebtoken: jsonwebtoken
                                     }
                                 )
-                            } else {
-                                res.json({message: 'Please check email or password'});
                             }
-                        }
-                    )               
-                }
+                        )
+                    }
+                )               
             }
         );
     }
@@ -95,32 +94,46 @@ router.post(
 // Update
 router.post(
     '/update',
+    passport.authenticate('jwt', {session: false}),
     (req, res) => {
-        const formData  = {
+        const updateFormData  = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             userName: req.body.userName,
             password: req.body.password,
-            _id: req.body._id
         };
 
         UsersModel.findByIdAndUpdate(
-            {_id: formData._id},
-            {firstName: req.body.firstName, lastName: req.body.lastName, userName: req.body.userName, password: req.body.password},
+            {_id: req.body._id},
+            updateFormData,
             {},
-            (err, document) => {
+            (err, updatedUser) => {
                 if(err) {
                     console.log(err);
-             } else {
-                    res.json (
-                        {
-                            message : "your first name is updated",
-                            document: document
+                } else {
+                    bcrypt.genSalt(
+                        (err, salt) => {
+                            bcrypt.hash(
+                                updateFormData.password,
+                                salt,
+                                (err, hashedPassword) => {
+                                    updatedUser.password = hashedPassword;
+                                    updatedUser.save(
+                                        (err, dbResult) => {
+                                            if(err) {
+                                                res.json({message: err});
+                                            } else{
+                                                res.json({message: 'User updated'});
+                                            }
+                                        }
+                                    );
+                                }
+                            )
                         }
-                    )
+                    );
                 }
             }
-        );
+        ); 
     }
 );
 
