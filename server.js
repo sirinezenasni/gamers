@@ -2,21 +2,54 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const server = express();
 
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const secret = 's3cr3t1000';
 
-const dbURL = "mongodb+srv://Admin:NewPassword@cluster0-l5lpl.mongodb.net/gamers?retryWrites=true&w=majority";
-
 const UsersModel = require('./models/UsersModel.js');
 
-const UsersRoutes = require('./routes/UsersRoute.js');
+const passportJwtOptions = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: secret
+};
+
+const passportJwt = (passport) => {
+    passport.use(
+        new JwtStrategy (
+            passportJwtOptions,
+            (jwtPayload, done) => {
+                // Extract and find the user by their id (containted jwt)
+                UsersModel.findOne({_id: jwtPayload.id})
+                    .then(
+                        // If the document was found 
+                        (document) => {
+                            return done (null, document);
+                        }
+                    )
+                    .catch(
+                        //If something went wrong with database search
+                        (err) => {
+                            return done (null, null);
+                        }
+                    )
+            }
+        )
+    )
+};
+
+const server = express();
 
 server.use(bodyParser.urlencoded({ extended: false}));
 server.use(bodyParser.json());
 server.use(passport.initialize());
+
+passportJwt(passport);
+
+const dbURL = "mongodb+srv://Admin:NewPassword@cluster0-l5lpl.mongodb.net/gamers?retryWrites=true&w=majority";
+
+const UsersRoutes = require('./routes/UsersRoute.js');
+const FeedsRoute = require('./routes/FeedsRoute.js');
 
 mongoose.connect(
     dbURL,
@@ -37,6 +70,12 @@ mongoose.connect(
 server.use(
     '/users',
     UsersRoutes,
+);
+
+server.use(
+    '/feeds',
+    passport.authenticate('jwt', {session: false}),
+    FeedsRoute,
 );
 
 server.get(
