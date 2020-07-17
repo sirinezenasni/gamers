@@ -1,5 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const secret = 's3cr3t1000';
 
 const UsersModel = require('../models/UsersModel.js');
 
@@ -15,12 +19,31 @@ router.post(
             password: req.body.password,
             date: req.body.date
         };
-        
-        const newUsersModel = new UsersModel(formData);
-        newUsersModel.save();
-        res.send('Your POST has been received');
+
+        bcrypt.genSalt(
+            (err, salt) => {
+                bcrypt.hash(
+                    formData.password,
+                    salt,
+                    (err, hashedPassword) => {
+                        const newUsersModel = new UsersModel(formData);
+                        newUsersModel.password = hashedPassword;
+                        newUsersModel.save(
+                            (err, dbResult) => {
+                                if(err) {
+                                    res.json({message: err});
+                                } else{
+                                    res.json({message: 'user has been saved'});
+                                }
+                            }
+                        );
+                    }
+                )
+            }
+        );
     }
 );
+
 
 
 module.exports = router;
