@@ -100,12 +100,13 @@ router.post(
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             userName: req.body.userName,
+            password: req.body.password,
             _id: req.body._id
         };
 
         UsersModel.findByIdAndUpdate(
             {_id: formData._id},
-            {firstName: req.body.firstName, lastName: req.body.lastName, userName: req.body.userName},
+            {firstName: req.body.firstName, lastName: req.body.lastName, userName: req.body.userName, password: req.body.password},
             {},
             (err, document) => {
                 if(err) {
@@ -113,15 +114,14 @@ router.post(
              } else {
                     res.json (
                         {
-                            message : "you're first name, last name and username are updated",
+                            message : "your first name is updated",
                             document: document
                         }
                     )
                 }
             }
-
-        )
+        );
     }
-)
+);
 
 module.exports = router;
