@@ -1,14 +1,22 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const passport = require('passport');
+const server = express();
+
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+const secret = 's3cr3t1000';
+
+const dbURL = "mongodb+srv://Admin:NewPassword@cluster0-l5lpl.mongodb.net/gamers?retryWrites=true&w=majority";
 
 const UsersModel = require('./models/UsersModel.js');
-const server = express();
-const dbURL = "mongodb+srv://Admin:NewPassword@cluster0-l5lpl.mongodb.net/gamers?retryWrites=true&w=majority";
+
 const UsersRoutes = require('./routes/UsersRoute.js');
 
 server.use(bodyParser.urlencoded({ extended: false}));
 server.use(bodyParser.json());
+server.use(passport.initialize());
 
 mongoose.connect(
     dbURL,
