@@ -46,4 +46,28 @@ router.post(
     }
 )
 
+// Likes
+router.post(
+    '/likes',
+    (req, res) => {
+        ProductsModel.findById(req.body.feed_id)
+                    .then(
+                        (document) => {
+                            if (document.likes.indexOf(req.user._id) !== -1) {
+                                document.likes.pop(req.user._id);
+                            } else {
+                                document.likes.push(req.user._id);
+                            }
+                            document.save();
+                        }
+                    )
+                    .catch(
+                        (err) => {
+                            console.log('err: ', err);
+                        }
+                    )
+        res.send('Your POST likes has been received');
+    }
+);
+
 module.exports = router;
