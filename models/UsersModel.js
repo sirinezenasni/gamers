@@ -21,12 +21,9 @@ const UsersSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true,
-        },
-        date: {
-            type: Date,
-            default: Date.now,
         }
-    }
+    },
+    { timestamps: true },
 );
 
 const UsersModel = mongoose.model(
