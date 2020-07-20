@@ -1,3 +1,7 @@
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
 .App {
   text-align: center;
 }
@@ -14,7 +18,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #ffffff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -35,4 +39,43 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.jumbotron-header {
+  background-color: #176FA6;
+  color: #ffffff;
+  height: 10em;
+    align-content: center;
+}
+
+.jumbotron-footer {
+  object-fit: cover;
+  margin-top: 10em;
+  text-align: center;
+  background-color: #e9ebee;
+}
+
+.register-form {
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.box {
+  display: flex;
+    flex-direction: column;
+    margin: 20px auto;
+}
+
+.btn {
+  background-color: #D9BE36;
+}
+
+.btn-login {
+  margin: 2em 2em;
+  color: #ffffff;
+}
+
+.title {
+  text-align: center;
 }
