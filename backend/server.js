@@ -5,6 +5,7 @@ const passport = require('passport');
 
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
+const cors = require('cors');
 const secret = 's3cr3t1000';
 
 const UsersModel = require('./models/UsersModel.js');
@@ -43,6 +44,7 @@ const server = express();
 server.use(bodyParser.urlencoded({ extended: false}));
 server.use(bodyParser.json());
 server.use(passport.initialize());
+server.use(cors());
 
 passportJwt(passport);
 

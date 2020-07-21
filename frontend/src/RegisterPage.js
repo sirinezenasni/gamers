@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
   
-  export default function BasicTextFields() {
+  const BasicTextFields = () => {
     const classes = useStyles();
   
     return (
@@ -23,16 +23,11 @@ const useStyles = makeStyles((theme) => ({
             <h1>Create a new account</h1>
             <form className={classes.root}noValidate autoComplete="off">
                 <div className="box"> 
-                    <TextField id="standard-basic" label="First name" />
-                    <TextField id="standard-basic" label="Last name" />
-                    <TextField id="standard-basic" label="Email" />
-                    <TextField id="standard-basic" label="Password" />
-                </div>
-                <div className="box">
-                    <CheckBox />
-                </div>
-                <div className="box">
-                    <BirthdayBox />
+                    <TextField required id="standard-basic" label="First name" />
+                    <TextField required id="standard-basic" label="Last name" />
+                    <TextField required id="standard-basic" label="Username" />
+                    <TextField required id="standard-basic" label="Email" />
+                    <TextField required id="standard-basic" label="Password" />
                 </div>
                 <button
                     type="button"
@@ -42,3 +37,4 @@ const useStyles = makeStyles((theme) => ({
         </div>
     );
   }
+  export default BasicTextFields;

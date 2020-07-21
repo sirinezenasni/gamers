@@ -1,36 +1,96 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import AppContext from './AppContext';
+import {Link} from 'react-router-dom';
 
 const LoginPage = () => {
-    return (
-        <div>
-            <div className="jumbotron-header jumbotron-fluid row">
-                <div className="container col-6">
-                    <h1 className="title display-4">GAMERS</h1>
-                </div>
+    let emailField;
+    let passwordField;
 
-                <div className="col-6">
-                    <form>
-                        <div className="form-row align-items-center">
-                            <div className="col-auto">
-                                <label for="inlineFormInput">Email</label>
-                                <input type="text" className="form-control mb-2" id="inlineFormInput"/>
-                            </div>
+    const [globalState, setGlobalState] = useContext(AppContext);
 
-                            <div className="col-auto">
-                                <label for="inlineFormInputGroup">Password</label>
-                                <input type="text" className="form-control mb-2" id="inlineFormInputGroup"/>
-                            </div>
+    const loginUser = () => {
+        fetch("http://localhost:8080/users/login", 
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: emailField.value,
+                    password: passwordField.value
+                }),
+                headers: {"Content-Type": "application/json"}
+            }
+        )
+        .then(
+            (result) => result.json()
+        )
+        .then (
+            (json) => {
+                const { message, jsonwebtoken } = json;
+                if(jsonwebtoken) {
+                    // update the globalState
+                    setGlobalState(
+                        {
+                            ...globalState,
+                            loggedIn: true
+                        }
+                    )
 
-                            <div className="col-auto">
-                                <button type="submit" className="btn btn-login mb-2">Login</button>
+                    // save the jwt in the browser
+                    localStorage.setItem('jwt', jsonwebtoken);
+                } else {
+                    // throw an error
+                    alert(message);
+                }    
+            }
+        )
+    }
+
+    if(globalState.loggedIn === true) {
+        return (
+            <Redirect to="/dashboard"/>)
+    } else {
+        return (
+            <div>
+                <div className="jumbotron-header jumbotron-fluid row">
+                    <div className="container col-6">
+                        <h1 className="title display-4">GAMERS</h1>
+                    </div>
+    
+                    <div className="col-6">
+                        <form>
+                            <div className="form-row align-items-center">
+                                <div className="col-auto">
+                                    <label for="inlineFormInput">Email</label>
+                                    <input 
+                                        ref={ (elem) => emailField = elem }
+                                        type="email" 
+                                        className="form-control mb-2" 
+                                        id="inlineFormInput"/>
+                                </div>
+    
+                                <div className="col-auto">
+                                    <label for="inlineFormInputGroup">Password</label>
+                                    <input 
+                                        ref={ (elem) => passwordField = elem }
+                                        type="password" 
+                                        className="form-control mb-2" 
+                                        id="inlineFormInputGroup"/>
+                                </div>
+    
+                                <div className="col-auto">
+                                    <button 
+                                        onClick={loginUser}
+                                        type="button" 
+                                        className="btn btn-login mb-2">Login</button>
+                                </div>
                             </div>
-                        </div>
-                        
-                    </form>
+                            
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+        )
+    }
 }
 
 export default LoginPage;
