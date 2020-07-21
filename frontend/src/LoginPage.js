@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import AppContext from './AppContext';
-import {Link} from 'react-router-dom';
 
 const LoginPage = () => {
     let emailField;

@@ -36,7 +36,7 @@ const App = () => {
       <BrowserRouter>
         <Switch>
           <Route path="/" exact={true} component={LandingPage}/>
-          <Route path="/dashboard" exact={true} component={DashBoard}/>
+          <PrivateRoute path="/dashboard" exact={true} component={DashBoard}/>
         </ Switch>
       </ BrowserRouter>
     </ AppContext.Provider>
