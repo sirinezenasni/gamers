@@ -48,7 +48,7 @@ const LoginPage = () => {
 
     // If the user is loggedIn, redirect them
     if(globalState.loggedIn === true) {
-        return(<Redirect to="/"/>)
+        return(<Redirect to="/dashboard"/>)
     }
 
     // Otherwise, show the login form
