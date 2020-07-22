@@ -87,6 +87,11 @@ server.use(
     PostRoute,
 );
 
+server.use(
+    '/profile',
+    PostRoute,
+);
+
 server.get(
     '/',
     (req, res) => {

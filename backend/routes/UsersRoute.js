@@ -137,4 +137,22 @@ router.post(
     }
 );
 
+// Get User
+router.get(
+    '/profile',
+    (req, res) => {
+        UsersModel.findOne()
+        .then(
+            (results) => {
+                res.json(results);
+            }
+        )
+        .catch(
+            (e) => {
+                console.log('error occured', e);
+            }
+        );
+    }
+);
+
 module.exports = router;
