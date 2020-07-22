@@ -1,6 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import AppContext from './AppContext';
+import NavBar from './NavBar.js';
+import {Link} from 'react-router-dom';
 
 const LoginPage = () => {
     let emailField;
@@ -9,8 +11,7 @@ const LoginPage = () => {
     const [globalState, setGlobalState] = useContext(AppContext);
 
     const loginUser = () => {
-        console.log("Login user called ....");
-        fetch("http://localhost:8080/users/login", 
+        fetch('http://localhost:8080/users/login', 
             {
                 method: 'POST',
                 body: JSON.stringify({
@@ -45,47 +46,48 @@ const LoginPage = () => {
         )
     }
 
+    // If the user is loggedIn, redirect them
     if(globalState.loggedIn === true) {
+        return(<Redirect to="/"/>)
+    }
+
+    // Otherwise, show the login form
+    else {
         return (
-            <Redirect to="/dashboard"/>)
-    } else {
-        return (
-            <div>
-                <div className="jumbotron-header jumbotron-fluid row">
-                    <div className="container col-6">
-                        <h1 className="title display-4">GAMERS</h1>
-                    </div>
-    
-                    <div className="col-6">
-                        <form>
-                            <div className="form-row align-items-center">
-                                <div className="col-auto">
-                                    <label htmlFor="inlineFormInput">Email</label>
+            <div> 
+                <NavBar />
+                <h1>Login</h1>
+
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <div className="col-4">
+                            <div>
+                                <div className="form-group">
+                                    <label htmlFor="exampleInputEmail1">Email address</label>
                                     <input 
                                         ref={ (elem) => emailField = elem }
                                         type="email" 
-                                        className="form-control mb-2" 
-                                        id="inlineFormInput"/>
+                                        className="form-control" 
+                                        id="exampleInputEmail1" 
+                                        aria-describedby="emailHelp"/>
+                                    <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
                                 </div>
-    
-                                <div className="col-auto">
-                                    <label htmlFor="inlineFormInputGroup">Password</label>
+                                <div className="form-group">
+                                    <label htmlFor="exampleInputPassword1">Password</label>
                                     <input 
                                         ref={ (elem) => passwordField = elem }
                                         type="password" 
-                                        className="form-control mb-2" 
-                                        id="inlineFormInputGroup"/>
+                                        className="form-control" 
+                                        id="exampleInputPassword1"/>
                                 </div>
-    
-                                <div className="col-auto">
-                                    <button 
-                                        onClick={loginUser}
-                                        type="button" 
-                                        className="btn btn-login mb-2">Login</button>
-                                </div>
+                                <button 
+                                    onClick={loginUser}
+                                    type="button" 
+                                    className="btn btn-primary">Login</button>
+
+                                    <p><br/>If you're not a registred user, please <Link to={"/register"}>register</Link> here.</p>
                             </div>
-                            
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>

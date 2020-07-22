@@ -1,44 +1,48 @@
-import React, { useContext } from 'react';
-import { Redirect } from 'react-router-dom';
-import AppContext from './AppContext';
+import React, {useContext} from 'react';
+import AppContext from "./AppContext.js";
+import logo from './logo.svg';
+//import Button from './Button';
+import {Link} from 'react-router-dom';
 
 const NavBar = () => {
+  const [globalState, setGlobalState] = useContext(AppContext);
 
-    const [globalState, setGlobalState] = useContext(AppContext);
+  const logOut = () => {
+    setGlobalState(
+      {
+        ...globalState,
+        loggedIn: false
+      }
+  );
 
-    const logOut = () => {
-        setGlobalState(
-            {
-                ...globalState,
-                loggedIn: false
-            }
-        );
+    localStorage.clear();
+}
 
-        localStorage.clear();
-    }
+  return (
+      <nav className="navbar navbar-dark bg-dark">
+      <Link to={"/"} className="navbar-brand">
+        GAMERS
+      </Link>
 
-    return (
-        <div className="jumbotron-header jumbotron-fluid row">
-            <div className="container col-6">
-                <h1 className="title display-4">GAMERS</h1>
-            </div>
+      <div style = {{display: 'felx'}}>
+      {
+        globalState.loggedIn === false && <Link
+        to="/login"
+        className="btn btn-primary">
+            Log In
+        </Link>
+      }
 
-            <div style={{display: 'flex'}}>
-                {
-                    globalState.loggedIn === false && 
-                    <Redirect to="/"/>
-                }
-
-                {
-                    globalState.loggedIn === true && 
-                    <button onClick={logOut}
-                    className="btn btn-primary">
-                        Log Out
-                    </button>
-                }
-            </div>
-        </div>
-    )
+      {
+        globalState.loggedIn === true && 
+        <button onClick={logOut}
+        className="btn btn-primary">
+            Log Out
+        </button>
+      }
+      </div>
+    </nav>
+  );
 }
 
 export default NavBar;
