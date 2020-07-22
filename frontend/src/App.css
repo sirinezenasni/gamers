@@ -40,3 +40,7 @@
 .card-title {
   text-align: center;
 }
+
+.card-post {
+  margin: 1em;
+}

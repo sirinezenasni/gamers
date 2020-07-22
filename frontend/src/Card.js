@@ -5,7 +5,7 @@ const Card = (prop) => {
         alert(prop.title);
     }
     return (
-        <div className="card" style={{width: "18rem"}}>
+        <div className="card">
           <img 
             src={prop.image} 
             className="card-img-top" 
@@ -14,11 +14,6 @@ const Card = (prop) => {
         <div className="card-body">
         <h5 className="card-title">{prop.title}</h5>
         <p className="card-text">{prop.description}</p>
-        <a 
-            href={prop.buttonLink} 
-            className="btn btn-primary"
-            onClick={makePurchase}
-        >{prop.buttonLabel}</a>
         </div>
         </div>
     )

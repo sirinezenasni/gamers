@@ -4,9 +4,10 @@ const PostListing = () => {
     const [state, setState] = useState(
         {
             posts: [],
+            users: []
         }
     )
-
+    
     const GetPost = () => {
         fetch("http://localhost:8080/postlisting", 
             {
@@ -27,6 +28,26 @@ const PostListing = () => {
         );
     }
 
+    const GetUsers = () => {
+        fetch("http://localhost:8080/users/profile", 
+            {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('jwt')}`
+                }
+            }
+        )
+        .then(
+            (result) => result.json()
+        )
+        .then (
+            (json) => {
+                setState({...state, users: json});
+            }
+        );
+    }
+
     if (state.posts.length <= 0) {
         GetPost();
     }
@@ -34,16 +55,21 @@ const PostListing = () => {
     return (
         <div>
             PostListing
-            <div className="container">
+            <div className="text-center">
                 {
                     state.posts.map(
                     (post, i) =>
-                        <div key={i}>
-                            <div className="card">
-                                <h5 className="card-title">{post.text}</h5>
+                        <div className="card card-post"key={i}>
+                            <div className="card-header">
+                                {post._id}
                             </div>
-                            <button type="button" className="btn btn-primary">Like</button>
-                            <p> {post.likes.length}</p>
+                            <div className="card-body">
+                                <p className="card-text">{post.text}</p>
+                                <a href="#" className="btn btn-primary">Likes</a>
+                            </div>
+                            <div className="card-footer text-muted">
+                                <p> {post.likes.length}</p>
+                            </div>
                         </div>
                     )
                 }
