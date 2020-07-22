@@ -11,7 +11,7 @@ function LandingPage() {
       <div className="row">
         <SideBar />
         <div className="col-9">
-          <h1>Dashboard</h1>
+          <h1>Home</h1>
           <Post />
           <PostListing />
         </div>

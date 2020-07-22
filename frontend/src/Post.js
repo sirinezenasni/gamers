@@ -24,7 +24,7 @@ const Post = () => {
             }
         )
     }
-    console.log(postField);
+   
     return (
         <div>
             Post
