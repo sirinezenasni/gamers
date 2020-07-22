@@ -9,6 +9,7 @@ const LoginPage = () => {
     const [globalState, setGlobalState] = useContext(AppContext);
 
     const loginUser = () => {
+        console.log("Login user called ....");
         fetch("http://localhost:8080/users/login", 
             {
                 method: 'POST',
@@ -59,7 +60,7 @@ const LoginPage = () => {
                         <form>
                             <div className="form-row align-items-center">
                                 <div className="col-auto">
-                                    <label for="inlineFormInput">Email</label>
+                                    <label htmlFor="inlineFormInput">Email</label>
                                     <input 
                                         ref={ (elem) => emailField = elem }
                                         type="email" 
@@ -68,7 +69,7 @@ const LoginPage = () => {
                                 </div>
     
                                 <div className="col-auto">
-                                    <label for="inlineFormInputGroup">Password</label>
+                                    <label htmlFor="inlineFormInputGroup">Password</label>
                                     <input 
                                         ref={ (elem) => passwordField = elem }
                                         type="password" 

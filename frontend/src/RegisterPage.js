@@ -34,6 +34,7 @@ const RegisterPage = () => {
     )
 
     const registerUser = () => {
+        console.log("register user called ....");
         fetch("http://localhost:8080/users/register", 
             {
                 method: 'POST',
@@ -58,12 +59,11 @@ const RegisterPage = () => {
                 
                 localStorage.setItem('jwt', jsonwebtoken);
 
-                setState({...state, registred: true});
-
                 setGlobalState(
                     {
                         ...globalState,
-                        registred: true
+                        registred: true,
+                        loggedIn: true,
                     }
                 )
             }
@@ -72,8 +72,8 @@ const RegisterPage = () => {
   
     if (globalState.registred === true) {
         return(
-        <Redirect to="/"/>
-        )
+            <Redirect to="/dashboard"/>
+        );
     } else {
         return (
             <div className="register-form">
@@ -89,19 +89,16 @@ const RegisterPage = () => {
                             onChange={(e) => lastNameField = e.target.value}
                             value={lastNameField}
                             required 
-                            id="standard-basic" 
                             label="Last name" />
                         <TextField 
                             onChange={(e) => userNameField = e.target.value}
                             value={userNameField}
                             required 
-                            id="standard-basic" 
                             label="Username" />
                         <TextField 
                             onChange={(e) => emailField = e.target.value}
                             value={emailField}
                             required 
-                            id="standard-basic" 
                             label="Email" />
                         <TextField 
                             onChange={(e) => passwordField = e.target.value}
@@ -116,13 +113,6 @@ const RegisterPage = () => {
                         className="btn">Register
                     </button>
                 </form>
-
-                { 
-                state.registered &&
-                <div className="alert alert-success" role="alert">
-                    You have successfully registered!
-                </div> 
-                }
             </div>
         );
     }
