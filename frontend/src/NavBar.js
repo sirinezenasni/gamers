@@ -1,7 +1,5 @@
 import React, {useContext} from 'react';
 import AppContext from "./AppContext.js";
-import logo from './logo.svg';
-//import Button from './Button';
 import {Link} from 'react-router-dom';
 
 const NavBar = () => {

@@ -1,16 +1,17 @@
 import React from 'react';
 import NavBar from './NavBar';
-import Jumbotron from './Jumbotron';
-import Card from './Card.js';
-import NewsletterForm from './NewsletterForm';
-
+import SideBar from './SideBar';
 
 function LandingPage() {
   return (
     <div>
       <NavBar />
-      <h1>Dashboard</h1>
-    
+      <div className="row">
+        <SideBar />
+        <div className="col-9">
+          <h1>Dashboard</h1>
+        </div>
+      </div>
     </div>
   );
 }
